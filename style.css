@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+td{
+    border: 1px solid black;
+}
+
+#gameTable {
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px; /* adjust as needed */
+}
+
+.slot {
+    flex-basis: calc(33.333% - 10px);
+    height: 90px; /* adjust as needed */
+    border: 1px solid black;
+    box-sizing: border-box;
+}
