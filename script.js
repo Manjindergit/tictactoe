@@ -128,6 +128,11 @@ function GameController(playerOneName, playerTwoName) {
 
 
 function playGame() {
+
+    //log the button which was clicked to inititate this function
+    document.getElementById('startGame').style.display = 'none';
+
+
     let player1= prompt("Enter player one name");
     let player2= prompt("Enter player two name");
     const game = GameController(player1, player2);
@@ -156,8 +161,16 @@ function playGame() {
             const targetSlotRow = e.target.getAttribute('row');
             const targetSlotCol = e.target.getAttribute('col');
             e.target.textContent = game.getActivePlayer().token;
+            //add class 
+            e.target.classList.add(`${game.getActivePlayer().token}`);
+            console.log(e.target.classList);
             const next = game.playRound(targetSlotRow, targetSlotCol);
             playerTurnH2.textContent = next;
+            if (next.includes('wins')) {
+                playerTurnH2.classList.add('winner');
+                gameTable.classList.add('winner');
+                gameTable.textContent = 'Game Over!'
+            }
             //restart game if someone wins or tie and also add a timer to display the countdown
             if (next === 'tie' || next.includes('wins')) {
                 setTimeout(() => {

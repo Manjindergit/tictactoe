@@ -4,6 +4,15 @@
     box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
 
 td{
     border: 1px solid black;
@@ -20,4 +29,40 @@ td{
     height: 90px; /* adjust as needed */
     border: 1px solid black;
     box-sizing: border-box;
+    text-align: center;
+    line-height: 90px; /* adjust as needed */
 }
+
+.slot:hover {
+    background-color: #54bd46;
+}
+
+
+.slot:empty {
+    background-color: #cfc9c9;
+}
+
+.slot.X {
+    background-color: yellow; 
+    color: red;
+}
+
+.slot.O {
+    background-color: red;
+    color: yellow;
+}
+
+.winner {
+    background-color: #54bd46;
+    color: white;
+    font-size: 2em;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
