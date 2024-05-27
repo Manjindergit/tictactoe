@@ -77,15 +77,15 @@ function cell() {
     return { addToken, getValue };
 }
 
-function GameController() {
+function GameController(playerOneName, playerTwoName) {
     const board = gameBoard();
     const players = [
         {
-            name: 'playerOneName',
+            name: playerOneName,
             token: 'X'
         },
         {
-            name: 'playerTwoName',
+            name: playerTwoName,
             token: 'O'
         }
     ];
@@ -109,7 +109,7 @@ function GameController() {
         //check winner and if someone wins return the winner name and end the game or switch player
         const winner = board.checkWinner();
         if (winner) {
-            return `${winner} wins!`;
+            return `${getActivePlayer().name} wins!`;
         }
         else if (board.getBoard().flat().every(cell => cell.getValue())) {
             console.log('It is a tie!');
@@ -128,44 +128,46 @@ function GameController() {
 
 
 function playGame() {
-    const game = GameController();
-
+    let player1= prompt("Enter player one name");
+    let player2= prompt("Enter player two name");
+    const game = GameController(player1, player2);
     const playerTurnH2 = document.getElementById('playerTurn');
     const gameTable = document.getElementById('gameTable');
 
     playerTurnH2.textContent = game.getActivePlayer().name;
 
+    // DocumentFragment to avoid reflow & innerHTML
+    let fragment = document.createDocumentFragment();
+
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
-            gameTable.innerHTML += `<div class="slot" row="${i}" col="${j}">`;
+            let slot = document.createElement('div');
+            slot.className = 'slot';
+            slot.setAttribute('row', i);
+            slot.setAttribute('col', j);
+            fragment.appendChild(slot);
         }
     }
 
+    gameTable.appendChild(fragment);
+
     gameTable.addEventListener('click', (e) => {
-        if (e.target.textContent !== "") {
-            let warningPopup = document.createElement("div");
-            warningPopup.textContent = "This slot is marked, choose another";
-            document.body.appendChild(warningPopup);
-            setTimeout(() => {
-                warningPopup.style.display = "none";
-
-            }, 1500);
-
-            return;
-        }
-        if (e.target.classList.contains('slot')) {
+        if (e.target.classList.contains('slot') && e.target.textContent === "") {
             const targetSlotRow = e.target.getAttribute('row');
             const targetSlotCol = e.target.getAttribute('col');
             e.target.textContent = game.getActivePlayer().token;
-            console.log(game.getActivePlayer.token);
-            console.log(targetSlotRow, targetSlotCol);
-            const next= game.playRound(targetSlotRow, targetSlotCol);
-            console.log(next);
+            const next = game.playRound(targetSlotRow, targetSlotCol);
             playerTurnH2.textContent = next;
-
-
-
+            //restart game if someone wins or tie and also add a timer to display the countdown
+            if (next === 'tie' || next.includes('wins')) {
+                setTimeout(() => {
+                    window.location.reload();
+                   
+                }, 3000);
+            }
+            
+        } else if (e.target.textContent !== "") {
+            alert("This slot is marked, choose another");
         }
     });
-
 }
